@@ -1,12 +1,32 @@
 /** @jsx jsx */
 
 import log from 'electron-log';
-import { jsx } from '@emotion/core';
+import { css, jsx } from '@emotion/core';
 
 Object.assign(console, log);
 
 import { RegistryView } from '@riboseinc/paneron-registry-kit/views';
+import { PropertyDetailView } from '@riboseinc/paneron-registry-kit/views/util';
 import { ItemClassConfiguration } from '@riboseinc/paneron-registry-kit/types/views';
+import { ControlGroup, InputGroup, Tag, TextArea } from '@blueprintjs/core';
+
+
+const DoubleLanguagePropertyDetailView: React.FC<{
+  title: string
+  values: { [langID: string]: string }
+  ValueWidget: React.FC<{ value: string }>
+}> = function ({ title, values, ValueWidget }) {
+  return <PropertyDetailView title={title}>
+    <ControlGroup fill>
+      {Object.entries(values).map(([langID, value]) =>
+        <div>
+          <Tag minimal css={css`margin-bottom: .25rem;`}>{langID}</Tag>
+          <ValueWidget value={value} />
+        </div>
+      )}
+    </ControlGroup>
+  </PropertyDetailView>
+}
 
 
 interface SymbolData {
@@ -112,10 +132,34 @@ const code: ItemClassConfiguration<SymbolData> = {
   validatePayload: async () => true,
 
   views: {
-    listItemView: ({ itemData }) => <span>{itemData.identifier} {itemData.title.eng}</span>,
-    detailView: ({ itemData }) => {
+    listItemView: ({ itemData, className }) =>
+      <span className={className}>
+        <code>{itemData.identifier}</code>
+        &emsp;
+        {itemData.title?.eng || '—'}
+      </span>,
+    detailView: ({ itemData, className }) => {
+      const {
+        identifier,
+        title,
+        description,
+      } = itemData;
       return (
-        <p>{itemData.title.eng}</p>
+        <div className={className}>
+          <PropertyDetailView title="Identifier">
+            <p>{identifier}</p>
+          </PropertyDetailView>
+          <DoubleLanguagePropertyDetailView
+            title="Title"
+            values={title}
+            ValueWidget={({ value }) => <InputGroup readOnly value={value} />}
+          />
+          <DoubleLanguagePropertyDetailView
+            title="Description"
+            values={description}
+            ValueWidget={({ value }) => <TextArea css={css`width: 100%; height: 100%;`} readOnly value={value} />}
+          />
+        </div>
       );
     },
     editView: () => <span>TBD</span>,
