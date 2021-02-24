@@ -98,7 +98,7 @@ interface SymbolData {
 const symbol: ItemClassConfiguration<SymbolData> = {
   meta: {
     title: "Symbol",
-    description: "Symbol",
+    description: "Describes a symbol that can be placed on equipment (from automobiles and home entertainment products to earth-moving machinery) to indicate how to use it correctly and safely.",
     id: 'symbols',
     alternativeNames: [],
   },
