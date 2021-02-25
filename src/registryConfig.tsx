@@ -9,14 +9,20 @@ import { Classes, Colors, ControlGroup, InputGroup, NonIdealState, Tag, TagInput
 
 const DoubleLanguagePropertyDetailView: React.FC<{
   values: { [langID: string]: any }
-  ValueWidget: React.FC<{ value: any }>
-}> = function ({ values, ValueWidget }) {
+  ValueWidget: React.FC<{ value: any, onChange?: (newValue: any) => void }>
+  onChange?: (newValues: { [langID: string]: any }) => void
+}> = function ({ values, ValueWidget, onChange }) {
+  function handleChange(langID: string, value: any) {
+    if (!onChange) { return; }
+    onChange({ ...values, [langID]: value });
+  }
+
   return (
     <ControlGroup fill>
       {Object.entries(values).map(([langID, value]) =>
         <div css={css`width: 50%;`}>
           <Tag minimal css={css`margin-bottom: .25rem;`}>{langID}</Tag>
-          <ValueWidget value={value} />
+          <ValueWidget value={value} onChange={(newVal) => handleChange(langID, newVal)} />
         </div>
       )}
     </ControlGroup>
@@ -143,7 +149,7 @@ const symbol: ItemClassConfiguration<SymbolData> = {
         &emsp;
         {itemData.title?.eng || '—'}
       </span>,
-    detailView: ({ itemData, className }) => {
+    editView: ({ itemData, className, onChange }) => {
       const {
         identifier,
         title,
@@ -239,24 +245,54 @@ const symbol: ItemClassConfiguration<SymbolData> = {
               </PropertyDetailView>
 
               <PropertyDetailView title="Function">
-                <TagInput disabled leftIcon="locate" values={itemData.function} />
+                <TagInput
+                  disabled={!onChange}
+                  onChange={(val) => onChange!({ ...itemData, fieldOfApplication: val.map(val => val?.toString() ?? null).filter(val => val !== null) as string[] })}
+                  leftIcon="locate"
+                  values={itemData.function}
+                />
               </PropertyDetailView>
               <PropertyDetailView title="Field of application">
-                <TagInput disabled leftIcon="search-around" values={fieldOfApplication} />
+                <TagInput
+                  disabled={!onChange}
+                  onChange={(val) => onChange!({ ...itemData, fieldOfApplication: val.map(val => val?.toString() ?? null).filter(val => val !== null) as string[] })}
+                  leftIcon="search-around"
+                  values={fieldOfApplication}
+                />
               </PropertyDetailView>
               <PropertyDetailView title="Relevant TCs">
-                <TagInput disabled leftIcon="people" values={relevantTCs} />
+                <TagInput
+                  disabled={!onChange}
+                  onChange={(val) => onChange!({ ...itemData, relevantTCs: val.map(val => val?.toString() ?? null).filter(val => val !== null) as string[] })}
+                  leftIcon="people"
+                  values={relevantTCs}
+                />
               </PropertyDetailView>
               <PropertyDetailView title="Relevant publications">
-                <TagInput disabled leftIcon="book" values={relevantPublications} />
+                <TagInput
+                  disabled={!onChange}
+                  onChange={(val) => onChange!({ ...itemData, relevantPublications: val.map(val => val?.toString() ?? null).filter(val => val !== null) as string[] })}
+                  leftIcon="book"
+                  values={relevantPublications}
+                />
               </PropertyDetailView>
 
               <PropertyDetailView title="Replacing">
-                <TagInput disabled leftIcon="flows" values={replacing} />
+                <TagInput
+                  disabled={!onChange}
+                  onChange={(val) => onChange!({ ...itemData, replacing: val.map(val => val?.toString() ?? null).filter(val => val !== null) as string[] })}
+                  leftIcon="flows"
+                  values={replacing}
+                />
               </PropertyDetailView>
 
               <PropertyDetailView title="Authors">
-                <TagInput disabled leftIcon="user" values={authors} />
+                <TagInput
+                  disabled={!onChange}
+                  onChange={(val) => onChange!({ ...itemData, authors: val.map(val => val?.toString() ?? null).filter(val => val !== null) as string[] })}
+                  leftIcon="user"
+                  values={authors}
+                />
               </PropertyDetailView>
 
               <PropertyDetailView title="Remarks">
@@ -269,7 +305,10 @@ const symbol: ItemClassConfiguration<SymbolData> = {
               <PropertyDetailView title="Keywords">
                 <DoubleLanguagePropertyDetailView
                   values={keywords}
-                  ValueWidget={({ value }) => <TagInput disabled leftIcon="tag" values={value} />}
+                  onChange={onChange ? ((val) => onChange!({ ...itemData, keywords: val as { eng: string[], fre: string[] } })) : undefined}
+                  ValueWidget={({ value, onChange }) =>
+                    <TagInput disabled={!onChange} onChange={onChange} leftIcon="tag" values={value} />
+                  }
                 />
               </PropertyDetailView>
             </div>
@@ -292,7 +331,6 @@ const symbol: ItemClassConfiguration<SymbolData> = {
         return <NonIdealState icon="heart-broken" title="Error displaying item" />;
       }
     },
-    editView: () => <span>TBD</span>,
   },
 };
 
