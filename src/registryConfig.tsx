@@ -4,7 +4,7 @@ import { css, jsx } from '@emotion/core';
 
 import { PropertyDetailView } from '@riboseinc/paneron-registry-kit/views/util';
 import { ItemClassConfiguration } from '@riboseinc/paneron-registry-kit/types/views';
-import { Classes, Colors, ControlGroup, InputGroup, NonIdealState, Tag, TagInput } from '@blueprintjs/core';
+import { Classes, Colors, ControlGroup, InputGroup, Tag, TagInput } from '@blueprintjs/core';
 
 
 const DoubleLanguagePropertyDetailView: React.FC<{
@@ -111,8 +111,31 @@ const symbol: ItemClassConfiguration<SymbolData> = {
   defaults: {
     replacing: [],
     relevantPublications: [],
+    identifier: '',
     relevantTCs: [],
     geometricForm: [],
+    title: {
+      eng: '',
+      fre: '',
+    },
+    prefix: '',
+    preview: '',
+    form: {
+      arrows: '',
+      arrowsDouble: '',
+      barrels: '',
+      circles: '',
+      lines: '',
+      objectsOrdinaryUsers: '',
+      objectsTechnicalUsers: '',
+      objectsStandardized: '',
+      recognizableObjects: '',
+      polygons: '',
+      rectangles: '',
+      shields: '',
+      squares: '',
+      triangles: '',
+    },
     function: [],
     fieldOfApplication: [],
     authors: [],
@@ -136,6 +159,8 @@ const symbol: ItemClassConfiguration<SymbolData> = {
       eng: [],
       fre: [],
     },
+    publishedIn: '',
+    std: '',
     attachments: {},
   },
   itemSorter: (p1, p2) => (p1.identifier || '').localeCompare(p2.identifier || ''),
@@ -169,7 +194,7 @@ const symbol: ItemClassConfiguration<SymbolData> = {
         attachments,
       } = itemData;
 
-      const attachmentViews = Object.entries(attachments).map(([attachmentID, attachment]) => {
+      const attachmentViews = Object.entries((attachments ?? {})).map(([attachmentID, attachment]) => {
         let view: JSX.Element;
         if (attachment !== null) {
           const dataURL = `data:${attachment.mime};base64,${attachment.data}`;
@@ -185,9 +210,7 @@ const symbol: ItemClassConfiguration<SymbolData> = {
         );
       });
 
-      if (identifier && title && description && keywords) {
-        return (
-
+      return (
         <div className={className} css={css`
             position: absolute; top: 0rem; left: 0rem; right: 0rem; bottom: 0rem;
 
@@ -199,137 +222,134 @@ const symbol: ItemClassConfiguration<SymbolData> = {
 
             & > * { padding: 1rem; }`}>
 
-            <div css={css`overflow-y: auto; flex: 1;`}>
-              <PropertyDetailView title="Identifier">
-                {identifier}
-              </PropertyDetailView>
+          <div css={css`overflow-y: auto; flex: 1;`}>
+            <PropertyDetailView title="Identifier">
+              {identifier}
+            </PropertyDetailView>
 
-              <PropertyDetailView title="Title">
-                <DoubleLanguagePropertyDetailView
-                  values={title}
-                  ValueWidget={({ value }) => <InputGroup readOnly value={value} />}
-                />
-              </PropertyDetailView>
+            <PropertyDetailView title="Title">
+              <DoubleLanguagePropertyDetailView
+                values={title}
+                ValueWidget={({ value }) => <InputGroup readOnly value={value} />}
+              />
+            </PropertyDetailView>
 
-              <PropertyDetailView title="Prefix">
-                {prefix}
-              </PropertyDetailView>
+            <PropertyDetailView title="Prefix">
+              {prefix}
+            </PropertyDetailView>
 
-              <PropertyDetailView title="Std.">
-                {std}
-              </PropertyDetailView>
+            <PropertyDetailView title="Std.">
+              {std}
+            </PropertyDetailView>
 
-              <PropertyDetailView title="Published in">
-                {publishedIn}
-              </PropertyDetailView>
+            <PropertyDetailView title="Published in">
+              {publishedIn}
+            </PropertyDetailView>
 
-              <PropertyDetailView title="Product area">
-                <DoubleLanguagePropertyDetailView
-                  values={productArea}
-                  ValueWidget={MaybeTextarea}
-                />
-              </PropertyDetailView>
+            <PropertyDetailView title="Product area">
+              <DoubleLanguagePropertyDetailView
+                values={productArea}
+                ValueWidget={MaybeTextarea}
+              />
+            </PropertyDetailView>
 
-              <PropertyDetailView title="Description">
-                <DoubleLanguagePropertyDetailView
-                  values={description}
-                  ValueWidget={MaybeTextarea}
-                />
-              </PropertyDetailView>
+            <PropertyDetailView title="Description">
+              <DoubleLanguagePropertyDetailView
+                values={description}
+                ValueWidget={MaybeTextarea}
+              />
+            </PropertyDetailView>
 
-              <PropertyDetailView title="Notes">
-                <DoubleLanguagePropertyDetailView
-                  values={notes}
-                  ValueWidget={MaybeTextarea}
-                />
-              </PropertyDetailView>
+            <PropertyDetailView title="Notes">
+              <DoubleLanguagePropertyDetailView
+                values={notes}
+                ValueWidget={MaybeTextarea}
+              />
+            </PropertyDetailView>
 
-              <PropertyDetailView title="Function">
-                <TagInput
-                  disabled={!onChange}
-                  onChange={(val) => onChange!({ ...itemData, fieldOfApplication: val.map(val => val?.toString() ?? null).filter(val => val !== null) as string[] })}
-                  leftIcon="locate"
-                  values={itemData.function}
-                />
-              </PropertyDetailView>
-              <PropertyDetailView title="Field of application">
-                <TagInput
-                  disabled={!onChange}
-                  onChange={(val) => onChange!({ ...itemData, fieldOfApplication: val.map(val => val?.toString() ?? null).filter(val => val !== null) as string[] })}
-                  leftIcon="search-around"
-                  values={fieldOfApplication}
-                />
-              </PropertyDetailView>
-              <PropertyDetailView title="Relevant TCs">
-                <TagInput
-                  disabled={!onChange}
-                  onChange={(val) => onChange!({ ...itemData, relevantTCs: val.map(val => val?.toString() ?? null).filter(val => val !== null) as string[] })}
-                  leftIcon="people"
-                  values={relevantTCs}
-                />
-              </PropertyDetailView>
-              <PropertyDetailView title="Relevant publications">
-                <TagInput
-                  disabled={!onChange}
-                  onChange={(val) => onChange!({ ...itemData, relevantPublications: val.map(val => val?.toString() ?? null).filter(val => val !== null) as string[] })}
-                  leftIcon="book"
-                  values={relevantPublications}
-                />
-              </PropertyDetailView>
+            <PropertyDetailView title="Function">
+              <TagInput
+                disabled={!onChange}
+                onChange={(val) => onChange!({ ...itemData, fieldOfApplication: val.map(val => val?.toString() ?? null).filter(val => val !== null) as string[] })}
+                leftIcon="locate"
+                values={itemData.function}
+              />
+            </PropertyDetailView>
+            <PropertyDetailView title="Field of application">
+              <TagInput
+                disabled={!onChange}
+                onChange={(val) => onChange!({ ...itemData, fieldOfApplication: val.map(val => val?.toString() ?? null).filter(val => val !== null) as string[] })}
+                leftIcon="search-around"
+                values={fieldOfApplication}
+              />
+            </PropertyDetailView>
+            <PropertyDetailView title="Relevant TCs">
+              <TagInput
+                disabled={!onChange}
+                onChange={(val) => onChange!({ ...itemData, relevantTCs: val.map(val => val?.toString() ?? null).filter(val => val !== null) as string[] })}
+                leftIcon="people"
+                values={relevantTCs}
+              />
+            </PropertyDetailView>
+            <PropertyDetailView title="Relevant publications">
+              <TagInput
+                disabled={!onChange}
+                onChange={(val) => onChange!({ ...itemData, relevantPublications: val.map(val => val?.toString() ?? null).filter(val => val !== null) as string[] })}
+                leftIcon="book"
+                values={relevantPublications}
+              />
+            </PropertyDetailView>
 
-              <PropertyDetailView title="Replacing">
-                <TagInput
-                  disabled={!onChange}
-                  onChange={(val) => onChange!({ ...itemData, replacing: val.map(val => val?.toString() ?? null).filter(val => val !== null) as string[] })}
-                  leftIcon="flows"
-                  values={replacing}
-                />
-              </PropertyDetailView>
+            <PropertyDetailView title="Replacing">
+              <TagInput
+                disabled={!onChange}
+                onChange={(val) => onChange!({ ...itemData, replacing: val.map(val => val?.toString() ?? null).filter(val => val !== null) as string[] })}
+                leftIcon="flows"
+                values={replacing}
+              />
+            </PropertyDetailView>
 
-              <PropertyDetailView title="Authors">
-                <TagInput
-                  disabled={!onChange}
-                  onChange={(val) => onChange!({ ...itemData, authors: val.map(val => val?.toString() ?? null).filter(val => val !== null) as string[] })}
-                  leftIcon="user"
-                  values={authors}
-                />
-              </PropertyDetailView>
+            <PropertyDetailView title="Authors">
+              <TagInput
+                disabled={!onChange}
+                onChange={(val) => onChange!({ ...itemData, authors: val.map(val => val?.toString() ?? null).filter(val => val !== null) as string[] })}
+                leftIcon="user"
+                values={authors}
+              />
+            </PropertyDetailView>
 
-              <PropertyDetailView title="Remarks">
-                <DoubleLanguagePropertyDetailView
-                  values={remarks}
-                  ValueWidget={MaybeTextarea}
-                />
-              </PropertyDetailView>
+            <PropertyDetailView title="Remarks">
+              <DoubleLanguagePropertyDetailView
+                values={remarks}
+                ValueWidget={MaybeTextarea}
+              />
+            </PropertyDetailView>
 
-              <PropertyDetailView title="Keywords">
-                <DoubleLanguagePropertyDetailView
-                  values={keywords}
-                  onChange={onChange ? ((val) => onChange!({ ...itemData, keywords: val as { eng: string[], fre: string[] } })) : undefined}
-                  ValueWidget={({ value, onChange }) =>
-                    <TagInput disabled={!onChange} onChange={onChange} leftIcon="tag" values={value} />
-                  }
-                />
-              </PropertyDetailView>
-            </div>
-
-
-            <aside
-                css={css`
-                  overflow-y: auto;
-                  flex-basis: 180px; background: ${Colors.LIGHT_GRAY4};
-                `}
-                className={Classes.ELEVATION_1}>
-              <PropertyDetailView title="Attachments">
-                {attachmentViews}
-              </PropertyDetailView>
-            </aside>
-
+            <PropertyDetailView title="Keywords">
+              <DoubleLanguagePropertyDetailView
+                values={keywords}
+                onChange={onChange ? ((val) => onChange!({ ...itemData, keywords: val as { eng: string[], fre: string[] } })) : undefined}
+                ValueWidget={({ value, onChange }) =>
+                  <TagInput disabled={!onChange} onChange={onChange} leftIcon="tag" values={value} />
+                }
+              />
+            </PropertyDetailView>
           </div>
-        );
-      } else {
-        return <NonIdealState icon="heart-broken" title="Error displaying item" />;
-      }
+
+
+          <aside
+              css={css`
+                overflow-y: auto;
+                flex-basis: 180px; background: ${Colors.LIGHT_GRAY4};
+              `}
+              className={Classes.ELEVATION_1}>
+            <PropertyDetailView title="Attachments">
+              {attachmentViews}
+            </PropertyDetailView>
+          </aside>
+
+        </div>
+      );
     },
   },
 };
