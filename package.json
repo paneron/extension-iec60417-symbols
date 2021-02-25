@@ -7,7 +7,7 @@
   "author": "Ribose Inc. <open.source@ribose.com>",
   "paneronExtension": {
     "title": "IEC 60417 Symbols Registry",
-    "iconURL": "https://extensions.paneron.org/iso-iec.png",
+    "iconURL": "https://extensions.paneron.org/iec.jpg",
     "featured": true,
     "requiredHostAppVersion": "^1.0.0-alpha19"
   },
