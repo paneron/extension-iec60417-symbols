@@ -1,6 +1,9 @@
 import { makeExtension } from '@riboseinc/paneron-extension-kit';
 
 export default makeExtension({
-  repoView: () => import('./RepoView'),
-  name: "IEC 60417 Symbols Registry",
+  mainView: () => import('./RepoView'),
+  name: "ICS Codes Registry",
+  requiredHostAppVersion: "^1.0.0-beta1",
+  datasetMigrations: {},
+  datasetInitializer: () => import('./migrations/initial'),
 });
