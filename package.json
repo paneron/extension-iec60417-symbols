@@ -1,6 +1,6 @@
 {
   "name": "@riboseinc/paneron-extension-iec60417-symbols",
-  "version": "1.0.0-alpha12",
+  "version": "1.0.0-alpha13",
   "description": "Paneron extension for working with IEC 60417 symbols registry",
   "main": "plugin.js",
   "repository": "https://github.com/paneron/extension-iec60417-symbols",
