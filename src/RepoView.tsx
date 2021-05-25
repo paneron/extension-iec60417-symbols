@@ -10,5 +10,8 @@ import { itemClassConfiguration } from './registryConfig';
 
 
 export default function () {
-  return <RegistryView itemClassConfiguration={itemClassConfiguration} />
+  return <RegistryView
+    itemClassConfiguration={itemClassConfiguration}
+    keyExpression="obj.data.identifier || obj.id"
+  />;
 };
