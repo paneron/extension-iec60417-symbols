@@ -1,10 +1,16 @@
 {
   "name": "@riboseinc/paneron-extension-iec60417-symbols",
-  "version": "1.0.0-alpha6",
+  "version": "1.0.0-alpha15",
   "description": "Paneron extension for working with IEC 60417 symbols registry",
   "main": "plugin.js",
-  "repository": "https://github.com/riboseinc/paneron-extension-iec60417-symbols",
+  "repository": "https://github.com/paneron/extension-iec60417-symbols",
   "author": "Ribose Inc. <open.source@ribose.com>",
+  "paneronExtension": {
+    "title": "IEC 60417 Symbols Registry",
+    "iconURL": "https://extensions.paneron.org/iec.jpg",
+    "featured": true,
+    "requiredHostAppVersion": "^1.0.0-alpha19"
+  },
   "scripts": {
     "build": "rm -r compiled dist; mkdir compiled dist; tsc --outDir compiled; babel compiled --out-dir dist; cp package.json dist/; rsync -a --include '*/' --include '*.d.ts' --include '*.js.map' --exclude '*' compiled/ dist/"
   },
@@ -25,11 +31,12 @@
     "@blueprintjs/icons": "^3.26.0",
     "@emotion/react": "^11.4.0",
     "@emotion/styled": "^11.3.0",
-    "@riboseinc/paneron-extension-kit": "^2.0.0-alpha31",
-    "@riboseinc/paneron-registry-kit": "^2.0.0-alpha26",
+    "@riboseinc/paneron-extension-kit": "2.0.0-dev31",
+    "@riboseinc/paneron-registry-kit": "2.0.0-dev26",
     "@types/js-yaml": "^3.12.5",
     "@types/node": "^14.11.2",
     "@types/react": "^16.9.11",
+    "@types/webpack-env": "^1.16.0",
     "electron": "^10.1.2",
     "electron-log": "^4.2.4",
     "react": "^16.11.0",
