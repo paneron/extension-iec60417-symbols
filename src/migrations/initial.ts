@@ -3,7 +3,7 @@ import { DatasetMigrationFunction } from '@riboseinc/paneron-extension-kit/types
 
 const initializeDataset: DatasetMigrationFunction = async (opts) => {
   return {
-    versionAfter: '1.0.0-alpha33',
+    versionAfter: '1.0.0-alpha5',
     bufferChangeset: {},
   };
 };
