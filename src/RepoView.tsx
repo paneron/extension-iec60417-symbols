@@ -1,14 +1,14 @@
 /** @jsx jsx */
 
 import log from 'electron-log';
-import { css, jsx } from '@emotion/core';
+import { css, jsx } from '@emotion/react';
+import { Classes, Colors, ControlGroup, InputGroup, NonIdealState, Tag, TagInput } from '@blueprintjs/core';
 
 Object.assign(console, log);
 
 import { RegistryView } from '@riboseinc/paneron-registry-kit/views';
 import { PropertyDetailView } from '@riboseinc/paneron-registry-kit/views/util';
 import { ItemClassConfiguration } from '@riboseinc/paneron-registry-kit/types/views';
-import { Classes, Colors, ControlGroup, InputGroup, NonIdealState, Tag, TagInput } from '@blueprintjs/core';
 
 
 const DoubleLanguagePropertyDetailView: React.FC<{
